@@ -41,5 +41,8 @@
     <attr format="boolean" name="state_filled"/>
     <attr format="boolean" name="rtlTextDirection"/>
     <attr format="string" name="maskingChar"/>
+    <attr name="activeLineColor" format="color"/>
+    <attr name="currentLineColor" format="color"/>
+    <attr name="inactiveLineColor" format="color"/>
   </declare-styleable>
 </resources>
