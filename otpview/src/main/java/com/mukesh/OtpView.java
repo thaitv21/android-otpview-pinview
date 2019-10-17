@@ -61,6 +61,7 @@ public class OtpView extends AppCompatEditText {
     };
     private static final int VIEW_TYPE_RECTANGLE = 0;
     private static final int VIEW_TYPE_LINE = 1;
+    private static final int VIEW_TYPE_BITMAP = 3;
     private int viewType;
     private int otpViewItemCount;
     private int otpViewItemWidth;
@@ -150,6 +151,11 @@ public class OtpView extends AppCompatEditText {
         setupAnimator();
         super.setCursorVisible(false);
         setTextIsSelectable(false);
+
+        if (viewType == VIEW_TYPE_BITMAP) {
+            setTextSize(40);
+            setTypeface(null, Typeface.BOLD);
+        }
     }
 
     @Override
@@ -327,6 +333,8 @@ public class OtpView extends AppCompatEditText {
                 drawOtpBox(canvas, i);
             } else if (viewType == VIEW_TYPE_LINE) {
                 drawOtpLine(canvas, i);
+            } else if (viewType == VIEW_TYPE_BITMAP) {
+                drawOtpBitmap(canvas, i);
             }
             if (DBG) {
                 drawAnchorLine(canvas);
@@ -453,6 +461,63 @@ public class OtpView extends AppCompatEditText {
 
         updateRoundRectPath(itemLineRect, otpViewItemRadius, otpViewItemRadius, drawLeft, drawRight);
         canvas.drawPath(path, paint);
+    }
+
+    private void drawOtpBitmap(Canvas canvas, int i) {
+        if (getText() == null) {
+            return;
+        }
+        boolean drawLeft;
+        boolean drawRight;
+        drawLeft = drawRight = true;
+        if (otpViewItemSpacing == 0 && otpViewItemCount > 1) {
+            if (i == 0) {
+                drawRight = false;
+            } else if (i == otpViewItemCount - 1) {
+                drawLeft = false;
+            } else {
+                drawLeft = drawRight = false;
+            }
+        }
+        int length = getText().length();
+        if (i < length) {
+            paint.setColor(activeLineColor);
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);
+            itemLineRect.set(
+                    itemBorderRect.left,
+                    itemBorderRect.bottom,
+                    itemBorderRect.right,
+                    itemBorderRect.bottom
+            );
+            updateRoundRectPath(itemLineRect, 0, 0, drawLeft, drawRight);
+            canvas.drawRoundRect(itemBorderRect, otpViewItemRadius, otpViewItemRadius, paint);
+        } else if (i == length) {
+            paint.setColor(currentLineColor);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setStrokeWidth(((float) lineWidth) / 10);
+            float halfLineWidth = ((float) lineWidth) / 2;
+            itemLineRect.set(
+                    itemBorderRect.left - halfLineWidth,
+                    itemBorderRect.bottom - halfLineWidth,
+                    itemBorderRect.right + halfLineWidth,
+                    itemBorderRect.bottom + halfLineWidth);
+
+            updateRoundRectPath(itemLineRect, 0, 0, drawLeft, drawRight);
+            canvas.drawPath(path, paint);
+        } else {
+            paint.setColor(inactiveLineColor);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setStrokeWidth(((float) lineWidth) / 10);
+            float halfLineWidth = ((float) lineWidth) / 2;
+            itemLineRect.set(
+                    itemBorderRect.left - halfLineWidth,
+                    itemBorderRect.bottom - halfLineWidth,
+                    itemBorderRect.right + halfLineWidth,
+                    itemBorderRect.bottom + halfLineWidth);
+
+            updateRoundRectPath(itemLineRect, 0, 0, drawLeft, drawRight);
+            canvas.drawPath(path, paint);
+        }
     }
 
     private void drawCursor(Canvas canvas) {
@@ -591,6 +656,9 @@ public class OtpView extends AppCompatEditText {
         float cy = itemCenterPoint.y;
         float x = cx - Math.abs((float) textRect.width()) / 2 - textRect.left;
         float y = cy + Math.abs((float) textRect.height()) / 2 - textRect.bottom;
+        if (text.charAt(charAt) == '*') {
+            y += 15;
+        }
         canvas.drawText(text, charAt, charAt + 1, x, y, paint);
     }
 

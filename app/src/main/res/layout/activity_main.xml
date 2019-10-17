@@ -51,8 +51,11 @@
         app:itemSpacing="6dp"
         app:lineColor="@color/otp_item_state"
         app:state_filled="true"
-        app:viewType="line"
+        app:viewType="bitmap"
+        android:text="1"
+        app:maskingChar="*"
         app:activeLineColor="#f00"
         app:currentLineColor="#fff"
-        app:inactiveLineColor="#aaa"/>
+        app:inactiveLineColor="#aaa"
+        app:itemRadius="15dp"/>
 </LinearLayout>
