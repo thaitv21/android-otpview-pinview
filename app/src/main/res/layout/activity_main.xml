@@ -53,9 +53,13 @@
         app:state_filled="true"
         app:viewType="bitmap"
         android:text="1"
-        app:maskingChar="*"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        app:maskingChar="\u273B"
         app:activeLineColor="#f00"
         app:currentLineColor="#fff"
         app:inactiveLineColor="#aaa"
+        app:itemWidth="40dp"
+        app:itemHeight="40dp"
         app:itemRadius="15dp"/>
 </LinearLayout>

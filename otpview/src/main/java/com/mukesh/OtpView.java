@@ -152,10 +152,10 @@ public class OtpView extends AppCompatEditText {
         super.setCursorVisible(false);
         setTextIsSelectable(false);
 
-        if (viewType == VIEW_TYPE_BITMAP) {
-            setTextSize(40);
-            setTypeface(null, Typeface.BOLD);
-        }
+//        if (viewType == VIEW_TYPE_BITMAP) {
+//            setTextSize(40);
+//            setTypeface(null, Typeface.BOLD);
+//        }
     }
 
     @Override
